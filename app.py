@@ -5,11 +5,13 @@ import yt_dlp
 app = Flask(__name__)
 CORS(app)
 
+SITE_URL = "https://all-video-downloader-qc9k.onrender.com"
+
 @app.route('/')
 def home():
     return render_template('index.html')
 
-# Monetag Verification Service Worker Route
+# Monetag Verification Route
 @app.route('/sw.js')
 def service_worker():
     sw_code = """Self.options = {
@@ -20,13 +22,36 @@ self.lary = ""
 importScripts('https://3nbf4.com/act/files/service-worker.min.js?r=sw')"""
     return Response(sw_code, mimetype='application/javascript')
 
+# SEO: Robots.txt Route
+@app.route('/robots.txt')
+def robots():
+    content = f"""User-agent: *
+Allow: /
+Sitemap: {SITE_URL}/sitemap.xml
+"""
+    return Response(content, mimetype='text/plain')
+
+# SEO: Sitemap.xml Route
+@app.route('/sitemap.xml')
+def sitemap():
+    content = f"""<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url>
+    <loc>{SITE_URL}/</loc>
+    <lastmod>2026-09-17</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>1.0</priority>
+  </url>
+</urlset>"""
+    return Response(content, mimetype='application/xml')
+
 @app.route('/api/download', methods=['POST'])
 def api_download():
     payload = request.get_json() or {}
     url = payload.get('url', '').strip()
 
     if not url:
-        return jsonify({'success': False, 'error': 'Kripya kisi video ka URL enter karein.'}), 400
+        return jsonify({'success': False, 'error': 'Kripya valid URL enter karein.'}), 400
 
     ydl_opts = {
         'quiet': True,
