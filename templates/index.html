@@ -3,9 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Video Downloader All in One - Pro HD Media Downloader</title>
-    <meta name="description" content="Download Instagram Reels, YouTube Shorts, TikTok, Facebook, Twitter & Pinterest videos in 1080p Full HD without watermark. Free, fast & unlimited.">
-    <meta name="keywords" content="video downloader all in one, reel downloader, shorts downloader, tiktok no watermark, mp3 extractor">
+    <title>Video Downloader All in One - Ultimate Pro Media Downloader</title>
+    <meta name="description" content="Download Instagram Reels, YouTube Shorts, TikTok, Facebook, Twitter, and Pinterest media in 1080p Full HD with QR codes, batch processing, and MP3 conversion.">
+    <meta name="keywords" content="video downloader all in one, qr downloader, batch reel downloader, snaptik pro alternative">
     <meta name="robots" content="index, follow">
     <link rel="canonical" href="https://all-video-downloader-qc9k.onrender.com/">
 
@@ -13,43 +13,35 @@
     <meta name="google-site-verification" content="YiwYT4eh5mCMQ1OmfqwSanh9TSMyUJ7KF_bu3O4CzSY" />
 
     <!-- Open Graph -->
-    <meta property="og:title" content="Video Downloader All in One - Free HD Downloader">
-    <meta property="og:description" content="Download Reels, Shorts, TikTok & 1000+ platform videos in HD for free.">
+    <meta property="og:title" content="Video Downloader All in One - Pro Studio">
+    <meta property="og:description" content="Download HD Reels, Shorts & TikTok with QR Code & Batch Support.">
     <meta property="og:url" content="https://all-video-downloader-qc9k.onrender.com/">
     <meta property="og:type" content="website">
 
-    <!-- Schema.org SoftwareApplication -->
-    <script type="application/ld+json">
-    {
-      "@context": "https://schema.org",
-      "@type": "WebApplication",
-      "name": "Video Downloader All in One",
-      "url": "https://all-video-downloader-qc9k.onrender.com/",
-      "description": "Universal social media video and audio downloader without watermark.",
-      "applicationCategory": "MultimediaApplication",
-      "operatingSystem": "All"
-    }
-    </script>
-
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- QR Code Library -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
     
     <!-- Monetag Robust Multitag Ads -->
     <script src="https://quge5.com/88/tag.min.js" data-zone="281804" async data-cfasync="false"></script>
 </head>
-<body class="bg-slate-950 text-slate-100 min-h-screen flex flex-col justify-between font-sans transition-colors duration-200">
+<body class="bg-slate-950 text-slate-100 min-h-screen flex flex-col justify-between font-sans">
 
     <!-- Header -->
     <header class="bg-slate-900/95 backdrop-blur border-b border-slate-800 sticky top-0 z-50 py-3 px-4">
         <div class="max-w-4xl mx-auto flex items-center justify-between">
-            <div class="flex items-center gap-2.5">
-                <i class="fa-solid fa-circle-play text-emerald-400 text-2xl animate-pulse"></i>
-                <span class="text-base sm:text-xl font-black tracking-wide text-white">Video Downloader <span class="text-emerald-400">All in One</span></span>
-            </div>
             <div class="flex items-center gap-2">
-                <span id="platformBadge" class="hidden text-[11px] px-2.5 py-1 rounded-full font-bold uppercase transition"></span>
-                <button onclick="shareWebsite()" class="text-xs bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 px-3 py-1.5 rounded-lg flex items-center gap-1.5 font-medium transition">
-                    <i class="fa-solid fa-share-nodes text-emerald-400"></i> Share
+                <i class="fa-solid fa-circle-play text-emerald-400 text-2xl"></i>
+                <span class="text-base sm:text-xl font-black text-white">Video Downloader <span class="text-emerald-400">All in One</span></span>
+            </div>
+            <div class="flex items-center gap-2 text-xs">
+                <span id="pingBadge" class="hidden sm:inline-block px-2 py-0.5 rounded bg-slate-800 border border-slate-700 text-emerald-400 font-mono text-[11px]">⚡ 24ms</span>
+                <button onclick="toggleBatchModal()" class="px-2.5 py-1 rounded-lg bg-slate-800 hover:bg-slate-700 border border-slate-700 text-slate-300 font-medium">
+                    <i class="fa-solid fa-layer-group text-sky-400"></i> Batch
+                </button>
+                <button onclick="shareWebsite()" class="px-2.5 py-1 rounded-lg bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold">
+                    <i class="fa-solid fa-share-nodes"></i>
                 </button>
             </div>
         </div>
@@ -58,23 +50,22 @@
     <!-- Main Content -->
     <main class="max-w-3xl mx-auto w-full px-4 py-6 flex-grow">
         
-        <!-- Platform Quick Tabs -->
+        <!-- Platform Tabs -->
         <div class="flex items-center justify-center gap-1.5 overflow-x-auto pb-3 mb-4 scrollbar-none text-xs">
-            <button onclick="setTab('all')" class="tab-btn px-3 py-1.5 rounded-full bg-emerald-500 text-slate-950 font-bold border border-emerald-400 whitespace-nowrap">🌟 All-in-One</button>
-            <button onclick="setTab('instagram')" class="tab-btn px-3 py-1.5 rounded-full bg-slate-900 text-slate-300 font-medium border border-slate-800 hover:border-slate-700 whitespace-nowrap"><i class="fa-brands fa-instagram text-pink-500"></i> Instagram</button>
-            <button onclick="setTab('youtube')" class="tab-btn px-3 py-1.5 rounded-full bg-slate-900 text-slate-300 font-medium border border-slate-800 hover:border-slate-700 whitespace-nowrap"><i class="fa-brands fa-youtube text-red-500"></i> Shorts</button>
-            <button onclick="setTab('tiktok')" class="tab-btn px-3 py-1.5 rounded-full bg-slate-900 text-slate-300 font-medium border border-slate-800 hover:border-slate-700 whitespace-nowrap"><i class="fa-brands fa-tiktok text-cyan-400"></i> TikTok</button>
-            <button onclick="setTab('facebook')" class="tab-btn px-3 py-1.5 rounded-full bg-slate-900 text-slate-300 font-medium border border-slate-800 hover:border-slate-700 whitespace-nowrap"><i class="fa-brands fa-facebook text-blue-500"></i> Facebook</button>
+            <button onclick="setTab('all')" class="tab-btn px-3 py-1.5 rounded-full bg-emerald-500 text-slate-950 font-bold border border-emerald-400 whitespace-nowrap">🌟 All Platforms</button>
+            <button onclick="setTab('instagram')" class="tab-btn px-3 py-1.5 rounded-full bg-slate-900 text-slate-300 font-medium border border-slate-800 whitespace-nowrap"><i class="fa-brands fa-instagram text-pink-500"></i> Instagram</button>
+            <button onclick="setTab('youtube')" class="tab-btn px-3 py-1.5 rounded-full bg-slate-900 text-slate-300 font-medium border border-slate-800 whitespace-nowrap"><i class="fa-brands fa-youtube text-red-500"></i> Shorts</button>
+            <button onclick="setTab('tiktok')" class="tab-btn px-3 py-1.5 rounded-full bg-slate-900 text-slate-300 font-medium border border-slate-800 whitespace-nowrap"><i class="fa-brands fa-tiktok text-cyan-400"></i> TikTok</button>
+            <button onclick="setTab('facebook')" class="tab-btn px-3 py-1.5 rounded-full bg-slate-900 text-slate-300 font-medium border border-slate-800 whitespace-nowrap"><i class="fa-brands fa-facebook text-blue-500"></i> Facebook</button>
         </div>
 
-        <!-- Heading -->
-        <div class="text-center mb-6">
-            <h1 id="mainHeading" class="text-2xl sm:text-4xl font-black text-white mb-2">Universal Media Downloader</h1>
-            <p id="subHeading" class="text-slate-400 text-xs sm:text-sm">Save High-Definition MP4 Video & 320kbps MP3 without watermark</p>
+        <div class="text-center mb-5">
+            <h1 class="text-2xl sm:text-4xl font-black text-white mb-2">Universal Media Downloader</h1>
+            <p class="text-slate-400 text-xs sm:text-sm">Save original streams in 1080p MP4 or 320kbps MP3 without watermark</p>
         </div>
 
-        <!-- URL Input Card -->
-        <div class="bg-slate-900 p-3 rounded-2xl border border-slate-800 shadow-2xl flex flex-col gap-2.5">
+        <!-- Download Box -->
+        <div class="bg-slate-900 p-3.5 rounded-2xl border border-slate-800 shadow-2xl flex flex-col gap-3">
             <div class="flex flex-col sm:flex-row gap-2">
                 <div class="relative flex-grow flex items-center">
                     <i id="inputIcon" class="fa-solid fa-link text-slate-500 ml-3.5 absolute pointer-events-none"></i>
@@ -82,7 +73,7 @@
                            class="w-full bg-slate-950 text-white pl-10 pr-24 py-3.5 rounded-xl border border-slate-800 focus:outline-none focus:border-emerald-500 text-sm">
                     <button onclick="pasteClipboard()" 
                             class="absolute right-2 px-3 py-1.5 bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-semibold rounded-lg border border-slate-700">
-                        <i class="fa-regular fa-clipboard"></i> Paste
+                        Paste
                     </button>
                 </div>
                 <button id="dlBtn" onclick="processDownload()" 
@@ -92,14 +83,15 @@
                 </button>
             </div>
 
-            <!-- Quality Preference Selector -->
-            <div class="flex items-center justify-between px-1 pt-1 border-t border-slate-800/60 text-xs text-slate-400">
-                <span class="flex items-center gap-1.5"><i class="fa-solid fa-sliders text-emerald-400"></i> Preferred Format:</span>
-                <select id="qualitySelect" class="bg-slate-950 text-emerald-400 border border-slate-800 rounded-lg px-2.5 py-1 focus:outline-none text-xs font-semibold">
-                    <option value="hd">⚡ Best Quality (1080p / Original)</option>
-                    <option value="audio">🎵 Audio Only (MP3 320kbps)</option>
-                    <option value="sd">📱 Standard Quality (Fast / Low Data)</option>
-                </select>
+            <!-- Custom File Renamer -->
+            <div class="flex flex-col sm:flex-row items-center justify-between gap-2 px-1 pt-1 border-t border-slate-800 text-xs text-slate-400">
+                <div class="flex items-center gap-1.5 w-full sm:w-auto">
+                    <i class="fa-solid fa-pen-to-square text-emerald-400"></i>
+                    <span>Rename file:</span>
+                    <input id="customFileName" type="text" placeholder="Default Title" 
+                           class="bg-slate-950 text-white border border-slate-800 rounded px-2 py-0.5 text-xs focus:outline-none w-36">
+                </div>
+                <span class="text-[11px] text-slate-500">Supports: Reels, Shorts, TikTok, Pin, X & FB</span>
             </div>
         </div>
 
@@ -108,13 +100,12 @@
             <div id="progressBar" class="bg-gradient-to-r from-emerald-500 to-sky-500 h-2 rounded-full transition-all duration-300" style="width: 15%"></div>
         </div>
 
-        <!-- Error Container -->
-        <div id="errorBox" class="hidden mt-4 p-3.5 bg-red-950/40 border border-red-800 text-red-300 text-xs rounded-xl text-center font-medium"></div>
+        <!-- Error Box -->
+        <div id="errorBox" class="hidden mt-4 p-3 bg-red-950/40 border border-red-800 text-red-300 text-xs rounded-xl text-center"></div>
 
-        <!-- Result Container With Video Preview & Direct Triggers -->
+        <!-- Result Box -->
         <div id="resultBox" class="hidden mt-6 bg-slate-900 border border-slate-800 rounded-2xl p-5 shadow-2xl">
             <div class="flex flex-col sm:flex-row gap-5 items-start">
-                <!-- Video Preview -->
                 <div class="w-full sm:w-52 flex-shrink-0">
                     <video id="resVideo" controls playsinline class="hidden w-full h-52 object-cover rounded-xl border border-slate-800 bg-black"></video>
                     <img id="resThumb" src="" alt="Thumbnail" class="w-full h-52 object-cover rounded-xl border border-slate-800">
@@ -122,78 +113,64 @@
 
                 <div class="flex-grow w-full">
                     <div class="flex items-center gap-2 mb-2">
-                        <span class="text-[10px] bg-emerald-500/20 text-emerald-400 px-2 py-0.5 rounded font-bold uppercase">Ready</span>
+                        <span class="text-[10px] bg-emerald-500/20 text-emerald-400 px-2 py-0.5 rounded font-bold uppercase">HD 1080P</span>
                         <h2 id="resTitle" class="font-bold text-sm text-white line-clamp-2"></h2>
                     </div>
 
-                    <p class="text-xs text-slate-400 mb-4">Choose server or extract direct audio:</p>
-
-                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
-                        <a id="btnHd" href="#" target="_blank" rel="noopener noreferrer" 
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5 mt-3">
+                        <a id="btnHd" href="#" target="_blank" download="video.mp4" 
                            class="py-3 px-4 bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold rounded-xl text-xs flex items-center justify-center gap-2 shadow-lg shadow-emerald-500/20">
                             <i class="fa-solid fa-bolt"></i> Download 1080p HD
                         </a>
-                        <a id="btnSrv2" href="#" target="_blank" rel="noopener noreferrer" 
-                           class="py-3 px-4 bg-sky-600 hover:bg-sky-500 text-white font-semibold rounded-xl text-xs flex items-center justify-center gap-2">
-                            <i class="fa-solid fa-server"></i> Download (Server 2)
-                        </a>
-                        <a id="btnAudio" href="#" target="_blank" rel="noopener noreferrer" 
+                        <a id="btnAudio" href="#" target="_blank" download="audio.mp3" 
                            class="py-3 px-4 bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold rounded-xl text-xs flex items-center justify-center gap-2">
-                            <i class="fa-solid fa-music"></i> Audio Only (MP3)
+                            <i class="fa-solid fa-music"></i> Extract MP3 Audio
                         </a>
+                        <button onclick="showQRCode()" 
+                                class="py-2.5 px-4 bg-slate-800 hover:bg-slate-700 text-slate-200 font-semibold rounded-xl text-xs flex items-center justify-center gap-2 border border-slate-700">
+                            <i class="fa-solid fa-qrcode text-emerald-400"></i> Phone QR Code
+                        </button>
                         <button onclick="copyStreamLink()" 
-                                class="py-3 px-4 bg-slate-800 hover:bg-slate-700 text-slate-300 font-semibold rounded-xl text-xs flex items-center justify-center gap-2 border border-slate-700">
-                            <i class="fa-regular fa-copy"></i> Copy Direct Stream
+                                class="py-2.5 px-4 bg-slate-800 hover:bg-slate-700 text-slate-300 font-semibold rounded-xl text-xs flex items-center justify-center gap-2 border border-slate-700">
+                            <i class="fa-regular fa-copy"></i> Copy Stream URL
                         </button>
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- Live Server Counters Banner -->
-        <div class="mt-8 grid grid-cols-3 gap-2 text-center">
-            <div class="p-3 bg-slate-900/60 border border-slate-800 rounded-xl">
-                <p class="text-base sm:text-lg font-extrabold text-emerald-400">100%</p>
-                <p class="text-[10px] sm:text-xs text-slate-400">Watermark Free</p>
+        <!-- Phone QR Modal -->
+        <div id="qrModal" class="hidden fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+            <div class="bg-slate-900 border border-slate-800 p-5 rounded-2xl max-w-xs w-full text-center">
+                <h3 class="font-bold text-sm text-white mb-1">Scan with Phone Camera</h3>
+                <p class="text-xs text-slate-400 mb-4">Download file directly onto any phone</p>
+                <div id="qrcodeCanvas" class="bg-white p-3 rounded-xl mx-auto inline-block"></div>
+                <button onclick="closeQRModal()" class="mt-4 w-full py-2 bg-slate-800 hover:bg-slate-700 text-white rounded-lg text-xs font-semibold">Close</button>
             </div>
-            <div class="p-3 bg-slate-900/60 border border-slate-800 rounded-xl">
-                <p class="text-base sm:text-lg font-extrabold text-sky-400">1000+</p>
-                <p class="text-[10px] sm:text-xs text-slate-400">Platforms</p>
-            </div>
-            <div class="p-3 bg-slate-900/60 border border-slate-800 rounded-xl">
-                <p class="text-base sm:text-lg font-extrabold text-amber-400">Ultra-Fast</p>
-                <p class="text-[10px] sm:text-xs text-slate-400">Cloud CDN</p>
+        </div>
+
+        <!-- Batch Modal -->
+        <div id="batchModal" class="hidden fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+            <div class="bg-slate-900 border border-slate-800 p-5 rounded-2xl max-w-md w-full">
+                <div class="flex justify-between items-center mb-3">
+                    <h3 class="font-bold text-sm text-white">Batch URL Downloader</h3>
+                    <button onclick="toggleBatchModal()" class="text-slate-400 hover:text-white">&times;</button>
+                </div>
+                <p class="text-xs text-slate-400 mb-2">Paste up to 5 links (one per line):</p>
+                <textarea id="batchInput" rows="4" class="w-full bg-slate-950 border border-slate-800 rounded-xl p-3 text-xs text-white focus:outline-none focus:border-emerald-500" placeholder="https://instagram.com/...&#10;https://youtube.com/shorts/..."></textarea>
+                <button onclick="processBatch()" class="mt-3 w-full py-2.5 bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold rounded-xl text-xs">Process Batch Links</button>
+                <div id="batchResults" class="mt-3 space-y-1.5 max-h-40 overflow-y-auto"></div>
             </div>
         </div>
 
         <!-- Recent History -->
         <div id="historyContainer" class="hidden mt-8">
             <div class="flex items-center justify-between mb-3">
-                <span class="text-xs font-bold text-slate-400 uppercase tracking-wider"><i class="fa-solid fa-clock-rotate-left text-emerald-400"></i> Recent Downloads</span>
+                <span class="text-xs font-bold text-slate-400 uppercase tracking-wider"><i class="fa-solid fa-clock-rotate-left text-emerald-400"></i> Recent History</span>
                 <button onclick="clearHistory()" class="text-[11px] text-slate-500 hover:text-red-400 transition">Clear</button>
             </div>
             <div id="historyList" class="grid grid-cols-1 sm:grid-cols-3 gap-2.5"></div>
         </div>
-
-        <!-- SEO Article & FAQ Section -->
-        <section class="mt-12 bg-slate-900/60 border border-slate-800/80 rounded-2xl p-6">
-            <h2 class="text-base sm:text-lg font-bold text-white mb-3">Best Social Media Downloader Online</h2>
-            <p class="text-xs sm:text-sm text-slate-400 leading-relaxed mb-6">
-                Save Instagram Reels, TikTok videos without watermark, YouTube Shorts, and Facebook clips in high resolution with crystal clear audio. No plugins or account registrations needed.
-            </p>
-
-            <h3 class="text-sm font-bold text-emerald-400 mb-3">Frequently Asked Questions</h3>
-            <div class="space-y-2.5 text-xs sm:text-sm">
-                <div class="p-3 bg-slate-950/60 rounded-xl border border-slate-800">
-                    <p class="font-semibold text-white">How do I save videos directly into my phone gallery?</p>
-                    <p class="text-slate-400 mt-1">Tap the Download button. In your browser tap 'Download' or long-press the video preview and select 'Download video'.</p>
-                </div>
-                <div class="p-3 bg-slate-950/60 rounded-xl border border-slate-800">
-                    <p class="font-semibold text-white">Can I convert video to MP3 music?</p>
-                    <p class="text-slate-400 mt-1">Yes, click on 'Audio Only (MP3)' to download the extracted high-bitrate soundtrack.</p>
-                </div>
-            </div>
-        </section>
     </main>
 
     <!-- Footer -->
@@ -205,10 +182,9 @@
     <script>
         let currentDirectUrl = '';
 
-        // Tab Switcher
         function setTab(type) {
             document.querySelectorAll('.tab-btn').forEach(b => {
-                b.className = 'tab-btn px-3 py-1.5 rounded-full bg-slate-900 text-slate-300 font-medium border border-slate-800 hover:border-slate-700 whitespace-nowrap';
+                b.className = 'tab-btn px-3 py-1.5 rounded-full bg-slate-900 text-slate-300 font-medium border border-slate-800 whitespace-nowrap';
             });
             event.target.className = 'tab-btn px-3 py-1.5 rounded-full bg-emerald-500 text-slate-950 font-bold border border-emerald-400 whitespace-nowrap';
 
@@ -217,37 +193,18 @@
             else if(type === 'youtube') input.placeholder = 'Paste YouTube Shorts link...';
             else if(type === 'tiktok') input.placeholder = 'Paste TikTok video link...';
             else if(type === 'facebook') input.placeholder = 'Paste Facebook Watch / Video link...';
-            else input.placeholder = 'Paste any video link here...';
+            else input.placeholder = 'Paste video link here...';
         }
 
-        // Platform auto detector
         function detectPlatform() {
             const url = document.getElementById('urlInput').value.trim().toLowerCase();
-            const badge = document.getElementById('platformBadge');
             const icon = document.getElementById('inputIcon');
 
-            if(url.includes('instagram.com')) {
-                showBadge('Instagram', 'bg-pink-900/60 text-pink-300 border border-pink-700', 'fa-brands fa-instagram text-pink-500');
-            } else if(url.includes('youtube.com') || url.includes('youtu.be')) {
-                showBadge('YouTube', 'bg-red-900/60 text-red-300 border border-red-700', 'fa-brands fa-youtube text-red-500');
-            } else if(url.includes('tiktok.com')) {
-                showBadge('TikTok', 'bg-cyan-900/60 text-cyan-300 border border-cyan-700', 'fa-brands fa-tiktok text-cyan-400');
-            } else if(url.includes('facebook.com') || url.includes('fb.watch')) {
-                showBadge('Facebook', 'bg-blue-900/60 text-blue-300 border border-blue-700', 'fa-brands fa-facebook text-blue-500');
-            } else if(url.includes('twitter.com') || url.includes('x.com')) {
-                showBadge('X / Twitter', 'bg-slate-800 text-white border border-slate-600', 'fa-brands fa-x-twitter text-white');
-            } else {
-                badge.classList.add('hidden');
-                icon.className = 'fa-solid fa-link text-slate-500 ml-3.5 absolute pointer-events-none';
-            }
-        }
-
-        function showBadge(name, classes, iconClass) {
-            const badge = document.getElementById('platformBadge');
-            badge.className = 'text-xs px-2.5 py-1 rounded-full font-bold uppercase transition ' + classes;
-            badge.innerText = name;
-            badge.classList.remove('hidden');
-            document.getElementById('inputIcon').className = iconClass + ' ml-3.5 absolute pointer-events-none';
+            if(url.includes('instagram.com')) icon.className = 'fa-brands fa-instagram text-pink-500 ml-3.5 absolute';
+            else if(url.includes('youtube.com') || url.includes('youtu.be')) icon.className = 'fa-brands fa-youtube text-red-500 ml-3.5 absolute';
+            else if(url.includes('tiktok.com')) icon.className = 'fa-brands fa-tiktok text-cyan-400 ml-3.5 absolute';
+            else if(url.includes('facebook.com') || url.includes('fb.watch')) icon.className = 'fa-brands fa-facebook text-blue-500 ml-3.5 absolute';
+            else icon.className = 'fa-solid fa-link text-slate-500 ml-3.5 absolute';
         }
 
         async function pasteClipboard() {
@@ -255,32 +212,17 @@
                 const text = await navigator.clipboard.readText();
                 document.getElementById('urlInput').value = text;
                 detectPlatform();
-            } catch (err) {
+            } catch(e) {
                 alert('Box me link paste karein.');
             }
         }
 
-        function shareWebsite() {
-            if(navigator.share) {
-                navigator.share({
-                    title: 'Video Downloader All in One',
-                    text: 'Download any Instagram Reel, Shorts, TikTok in HD without watermark:',
-                    url: window.location.href
-                });
-            } else {
-                navigator.clipboard.writeText(window.location.href);
-                alert('Website link copied to clipboard!');
-            }
-        }
+        // Enter key trigger
+        document.getElementById('urlInput').addEventListener('keypress', function(e) {
+            if(e.key === 'Enter') processDownload();
+        });
 
-        function copyStreamLink() {
-            if(currentDirectUrl) {
-                navigator.clipboard.writeText(currentDirectUrl);
-                alert('Direct download link copied to clipboard!');
-            }
-        }
-
-        // Animated progress
+        // Progress Bar
         let progressTimer;
         function startProgress() {
             const bar = document.getElementById('progressBar');
@@ -288,33 +230,26 @@
             let width = 15;
             bar.style.width = width + '%';
             progressTimer = setInterval(() => {
-                if (width < 85) {
-                    width += Math.random() * 15;
-                    bar.style.width = width + '%';
-                }
-            }, 300);
+                if(width < 85) { width += 15; bar.style.width = width + '%'; }
+            }, 250);
         }
 
         function finishProgress() {
             clearInterval(progressTimer);
-            const bar = document.getElementById('progressBar');
-            bar.style.width = '100%';
-            setTimeout(() => {
-                document.getElementById('progressContainer').classList.add('hidden');
-            }, 400);
+            document.getElementById('progressBar').style.width = '100%';
+            setTimeout(() => { document.getElementById('progressContainer').classList.add('hidden'); }, 300);
         }
 
         async function processDownload() {
-            const urlInput = document.getElementById('urlInput');
+            const val = document.getElementById('urlInput').value.trim();
             const errorBox = document.getElementById('errorBox');
             const resultBox = document.getElementById('resultBox');
             const btnLabel = document.getElementById('btnLabel');
             const btnSpin = document.getElementById('btnSpin');
             const dlBtn = document.getElementById('dlBtn');
 
-            const val = urlInput.value.trim();
             if(!val) {
-                errorBox.innerText = 'Pehle video ka link paste karein!';
+                errorBox.innerText = 'Pehle video ka URL paste karein!';
                 errorBox.classList.remove('hidden');
                 return;
             }
@@ -336,18 +271,25 @@
                 const data = await res.json();
                 finishProgress();
 
-                if (data.success) {
+                if(data.success) {
                     currentDirectUrl = data.download_hd;
-                    document.getElementById('resThumb').src = data.thumbnail || 'https://images.unsplash.com/photo-1611162617213-7d7a39e9b1d7?w=400';
-                    document.getElementById('resTitle').innerText = data.title;
-                    document.getElementById('btnHd').href = data.download_hd;
-                    document.getElementById('btnSrv2').href = data.download_server2;
-                    document.getElementById('btnAudio').href = data.download_mp3;
+                    const customName = document.getElementById('customFileName').value.trim();
+                    const titleText = customName || data.title;
 
-                    // Video Preview
+                    document.getElementById('resTitle').innerText = titleText;
+                    document.getElementById('resThumb').src = data.thumbnail || 'https://images.unsplash.com/photo-1611162617213-7d7a39e9b1d7?w=400';
+                    
+                    const hdBtn = document.getElementById('btnHd');
+                    hdBtn.href = data.download_hd;
+                    if(customName) hdBtn.download = customName + '.mp4';
+
+                    const audioBtn = document.getElementById('btnAudio');
+                    audioBtn.href = data.download_mp3;
+                    if(customName) audioBtn.download = customName + '.mp3';
+
                     const videoEl = document.getElementById('resVideo');
                     const thumbEl = document.getElementById('resThumb');
-                    if (data.download_hd && !data.download_hd.includes('cobalt') && !data.download_hd.includes('m3u8')) {
+                    if(data.download_hd && !data.download_hd.includes('cobalt') && !data.download_hd.includes('m3u8')) {
                         videoEl.src = data.download_hd;
                         videoEl.classList.remove('hidden');
                         thumbEl.classList.add('hidden');
@@ -357,19 +299,79 @@
                     }
 
                     resultBox.classList.remove('hidden');
-                    saveToHistory(data.title, data.download_hd);
+                    saveToHistory(titleText, data.download_hd);
                 } else {
-                    errorBox.innerText = data.error || 'Extract nahi ho paya. URL check karein.';
+                    errorBox.innerText = data.error || 'Video fetch nahi ho paya. URL check karein.';
                     errorBox.classList.remove('hidden');
                 }
-            } catch (err) {
+            } catch(err) {
                 finishProgress();
-                errorBox.innerText = 'Server busy. Kripya dobara koshish karein.';
+                errorBox.innerText = 'Server busy. Kripya 5 second baad dobara koshish karein.';
                 errorBox.classList.remove('hidden');
             } finally {
                 btnLabel.classList.remove('hidden');
                 btnSpin.classList.add('hidden');
                 dlBtn.disabled = false;
+            }
+        }
+
+        // QR Code Modal
+        function showQRCode() {
+            if(!currentDirectUrl) return;
+            const container = document.getElementById('qrcodeCanvas');
+            container.innerHTML = '';
+            new QRCode(container, {
+                text: currentDirectUrl,
+                width: 160,
+                height: 160
+            });
+            document.getElementById('qrModal').classList.remove('hidden');
+        }
+
+        function closeQRModal() {
+            document.getElementById('qrModal').classList.add('hidden');
+        }
+
+        // Batch Modal
+        function toggleBatchModal() {
+            document.getElementById('batchModal').classList.toggle('hidden');
+        }
+
+        async function processBatch() {
+            const lines = document.getElementById('batchInput').value.trim().split('\n').filter(l => l.trim().length > 0).slice(0, 5);
+            const resContainer = document.getElementById('batchResults');
+            resContainer.innerHTML = '<p class="text-emerald-400 text-xs font-semibold">Processing batch...</p>';
+
+            let html = '';
+            for(let u of lines) {
+                try {
+                    const r = await fetch('/api/download', {
+                        method: 'POST',
+                        headers: {'Content-Type':'application/json'},
+                        body: JSON.stringify({ url: u.trim() })
+                    });
+                    const d = await r.json();
+                    if(d.success) {
+                        html += `<div class="p-2 bg-slate-950 rounded flex justify-between items-center text-xs"><span class="truncate max-w-[200px]">${d.title}</span><a href="${d.download_hd}" target="_blank" class="text-emerald-400 font-bold">Download</a></div>`;
+                    }
+                } catch(e) {}
+            }
+            resContainer.innerHTML = html || '<p class="text-red-400 text-xs">Process error. Check URLs.</p>';
+        }
+
+        function shareWebsite() {
+            if(navigator.share) {
+                navigator.share({ title: 'Video Downloader All in One', url: window.location.href });
+            } else {
+                navigator.clipboard.writeText(window.location.href);
+                alert('Website link copied!');
+            }
+        }
+
+        function copyStreamLink() {
+            if(currentDirectUrl) {
+                navigator.clipboard.writeText(currentDirectUrl);
+                alert('Stream URL copied!');
             }
         }
 
@@ -386,12 +388,7 @@
             const list = document.getElementById('historyList');
             const container = document.getElementById('historyContainer');
             const history = JSON.parse(localStorage.getItem('dl_history') || '[]');
-            
-            if(!history.length) {
-                container.classList.add('hidden');
-                return;
-            }
-
+            if(!history.length) { container.classList.add('hidden'); return; }
             container.classList.remove('hidden');
             list.innerHTML = history.map(item => `
                 <a href="${item.link}" target="_blank" class="p-3 bg-slate-900 border border-slate-800 rounded-xl hover:border-emerald-500/50 transition flex flex-col justify-between">
