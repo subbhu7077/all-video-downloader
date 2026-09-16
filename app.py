@@ -50,7 +50,7 @@ def api_download():
     if not url:
         return jsonify({'success': False, 'error': 'Kripya valid video URL dalein.'}), 400
 
-    # yt-dlp configuration with YouTube Android client bypass
+    # iOS / Android Creator client bypasses YouTube datacenter bot detection
     ydl_opts = {
         'quiet': True,
         'no_warnings': True,
@@ -59,12 +59,12 @@ def api_download():
         'geo_bypass': True,
         'extractor_args': {
             'youtube': {
-                'player_client': ['android', 'web']
+                'player_client': ['ios', 'android_creator'],
+                'player_skip': ['webpage', 'configs', 'js']
             }
         },
         'http_headers': {
-            'User-Agent': 'Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Mobile Safari/537.36',
-            'Accept-Language': 'en-US,en;q=0.9'
+            'User-Agent': 'com.google.ios.youtube/19.29.1 (iPhone14,3; U; CPU iOS 17_5_1 like Mac OS X; en_US)'
         }
     }
 
@@ -78,10 +78,9 @@ def api_download():
             server2 = ''
             audio_url = ''
 
-            # Check formats
             formats = info.get('formats', [])
             
-            # Find direct video with audio
+            # Extract valid video + audio stream
             for f in formats:
                 f_url = f.get('url', '')
                 if not f_url:
@@ -89,17 +88,14 @@ def api_download():
                 vcodec = f.get('vcodec', 'none')
                 acodec = f.get('acodec', 'none')
 
-                # Combined stream
                 if vcodec != 'none' and acodec != 'none':
                     direct_video = f_url
                     server2 = f_url
-                # Audio only
                 if vcodec == 'none' and acodec != 'none':
                     audio_url = f_url
 
-            # Fallback direct url if combined not found
-            if not direct_video:
-                direct_video = info.get('url') or (formats[-1].get('url') if formats else '')
+            if not direct_video and formats:
+                direct_video = formats[-1].get('url', '')
             if not server2:
                 server2 = direct_video
             if not audio_url:
@@ -115,7 +111,25 @@ def api_download():
             })
 
     except Exception as e:
-        return jsonify({'success': False, 'error': f'Fetch error: {str(e)[:120]}'}), 400
+        # Fallback to general extractor for Instagram, TikTok, Facebook
+        try:
+            fallback_opts = {
+                'quiet': True,
+                'skip_download': True,
+                'noplaylist': True
+            }
+            with yt_dlp.YoutubeDL(fallback_opts) as ydl:
+                info = ydl.extract_info(url, download=False)
+                return jsonify({
+                    'success': True,
+                    'title': info.get('title', 'Video'),
+                    'thumbnail': info.get('thumbnail', ''),
+                    'download_hd': info.get('url', ''),
+                    'download_server2': info.get('url', ''),
+                    'download_mp3': info.get('url', '')
+                })
+        except Exception as inner_err:
+            return jsonify({'success': False, 'error': f'Download issue: {str(e)[:100]}'}), 400
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=8080)
