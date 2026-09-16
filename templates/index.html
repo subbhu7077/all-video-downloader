@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Universal Video Downloader - SnapTik Pro</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- ⚠️ MONETAG / ADSTERRA POPUNDER OR TRACKING SCRIPT CAN BE PASTED HERE -->
+    <script>
+        // Example Direct Link Ad URL (Apna Monetag / Adsterra direct link yahan replace karein)
+        const AD_DIRECT_LINK = "https://www.google.com"; 
+
+        function triggerAdThen(callbackUrl) {
+            // New tab me direct link ad trigger karta hai
+            window.open(AD_DIRECT_LINK, '_blank');
+            // Original video/audio download link open karta hai
+            window.location.href = callbackUrl;
+        }
+    </script>
+</head>
+<body class="bg-slate-950 text-slate-100 min-h-screen flex flex-col justify-between font-sans">
+
+    <!-- Header -->
+    <header class="bg-slate-900/90 border-b border-slate-800 sticky top-0 z-50 py-3.5 px-4">
+        <div class="max-w-4xl mx-auto flex items-center justify-between">
+            <div class="flex items-center gap-2">
+                <i class="fa-solid fa-cloud-arrow-down text-emerald-400 text-2xl"></i>
+                <span class="text-xl font-black tracking-wide text-emerald-400">Universal<span class="text-white">DL</span></span>
+            </div>
+            <span class="text-xs bg-emerald-950 text-emerald-300 border border-emerald-800 px-3 py-1 rounded-full">All-in-One Engine</span>
+        </div>
+    </header>
+
+    <!-- Top Banner Ad Space -->
+    <div class="w-full max-w-2xl mx-auto px-4 mt-4">
+        <div class="bg-slate-900 border border-dashed border-slate-800 p-3 rounded-xl text-center text-xs text-slate-500">
+            <!-- [TOP BANNER AD 728x90 / 300x50 SLOT HERE] -->
+            <span>Advertisement Banner Slot</span>
+        </div>
+    </div>
+
+    <!-- Main Body -->
+    <main class="max-w-2xl mx-auto w-full px-4 py-6 flex-grow">
+        <div class="text-center mb-6">
+            <h1 class="text-2xl sm:text-3xl font-black text-white mb-2">Social Media Video Downloader</h1>
+            <p class="text-slate-400 text-xs sm:text-sm">Instagram Reels, Shorts, TikTok, X, FB, Pinterest, Reddit & more</p>
+        </div>
+
+        <!-- URL Input Card -->
+        <div class="bg-slate-900 p-2.5 rounded-2xl border border-slate-800 shadow-2xl flex flex-col sm:flex-row gap-2">
+            <div class="relative flex-grow flex items-center">
+                <i class="fa-solid fa-link text-slate-500 ml-3.5 absolute pointer-events-none"></i>
+                <input id="urlInput" type="url" placeholder="Paste any video link here..." 
+                       class="w-full bg-slate-950 text-white pl-10 pr-20 py-3.5 rounded-xl border border-slate-800 focus:outline-none focus:border-emerald-500 text-sm">
+                <button onclick="pasteClipboard()" 
+                        class="absolute right-2 px-2.5 py-1.5 bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs rounded-lg border border-slate-700">
+                    Paste
+                </button>
+            </div>
+            <button id="dlBtn" onclick="processDownload()" 
+                    class="bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold px-6 py-3.5 rounded-xl transition flex items-center justify-center gap-2">
+                <span id="btnLabel"><i class="fa-solid fa-download"></i> Download</span>
+                <span id="btnSpin" class="hidden"><i class="fa-solid fa-circle-notch fa-spin"></i> Processing...</span>
+            </button>
+        </div>
+
+        <!-- Error Container -->
+        <div id="errorBox" class="hidden mt-4 p-3 bg-red-950/40 border border-red-800 text-red-300 text-xs rounded-xl text-center"></div>
+
+        <!-- Result Container -->
+        <div id="resultBox" class="hidden mt-6 bg-slate-900 border border-slate-800 rounded-2xl p-4 shadow-xl">
+            <div class="flex flex-col sm:flex-row gap-4 items-center">
+                <img id="resThumb" src="" alt="Thumbnail" class="w-full sm:w-40 h-40 object-cover rounded-xl border border-slate-800">
+                <div class="flex-grow w-full">
+                    <h3 id="resTitle" class="font-bold text-sm text-white line-clamp-2 mb-3"></h3>
+                    <div class="flex flex-col gap-2">
+                        <button onclick="triggerAdThen(document.getElementById('dlHd').value)" 
+                                class="w-full py-2.5 bg-emerald-500 text-slate-950 font-bold rounded-lg text-xs flex items-center justify-center gap-2">
+                            <i class="fa-solid fa-bolt"></i> Download HD Video
+                        </button>
+                        <button onclick="triggerAdThen(document.getElementById('dlSrv2').value)" 
+                                class="w-full py-2.5 bg-sky-600 text-white font-semibold rounded-lg text-xs flex items-center justify-center gap-2">
+                            <i class="fa-solid fa-server"></i> Download Video (Server 2)
+                        </button>
+                        <button onclick="triggerAdThen(document.getElementById('dlAudio').value)" 
+                                class="w-full py-2.5 bg-amber-500 text-slate-950 font-bold rounded-lg text-xs flex items-center justify-center gap-2">
+                            <i class="fa-solid fa-music"></i> Download Audio (MP3)
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <!-- Hidden inputs to hold stream URLs -->
+            <input type="hidden" id="dlHd">
+            <input type="hidden" id="dlSrv2">
+            <input type="hidden" id="dlAudio">
+        </div>
+
+        <!-- Middle Banner Ad Space -->
+        <div class="mt-6 bg-slate-900 border border-dashed border-slate-800 p-4 rounded-xl text-center text-xs text-slate-500">
+            <!-- [MID CONTENT AD BANNER SLOT HERE] -->
+            <span>Ad Space (In-Page Native Banner)</span>
+        </div>
+
+        <!-- Supported Badges -->
+        <div class="mt-8 text-center">
+            <p class="text-[11px] font-semibold tracking-wider text-slate-500 uppercase mb-3">Supported Platforms</p>
+            <div class="flex flex-wrap justify-center gap-2 text-xs text-slate-400">
+                <span class="px-2.5 py-1 bg-slate-900 border border-slate-800 rounded-md">TikTok</span>
+                <span class="px-2.5 py-1 bg-slate-900 border border-slate-800 rounded-md">Instagram</span>
+                <span class="px-2.5 py-1 bg-slate-900 border border-slate-800 rounded-md">YouTube Shorts</span>
+                <span class="px-2.5 py-1 bg-slate-900 border border-slate-800 rounded-md">Facebook</span>
+                <span class="px-2.5 py-1 bg-slate-900 border border-slate-800 rounded-md">X (Twitter)</span>
+                <span class="px-2.5 py-1 bg-slate-900 border border-slate-800 rounded-md">Pinterest</span>
+                <span class="px-2.5 py-1 bg-slate-900 border border-slate-800 rounded-md">Reddit</span>
+                <span class="px-2.5 py-1 bg-slate-900 border border-slate-800 rounded-md">1000+ Sites</span>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="py-4 text-center text-xs text-slate-600 border-t border-slate-900">
+        &copy; 2026 Universal Downloader. Educational Purpose.
+    </footer>
+
+    <!-- Logic Controller -->
+    <script>
+        async function pasteClipboard() {
+            try {
+                const text = await navigator.clipboard.readText();
+                document.getElementById('urlInput').value = text;
+            } catch (err) {
+                alert('Clipbord permission allow karein ya long press karke paste karein.');
+            }
+        }
+
+        async function processDownload() {
+            const urlInput = document.getElementById('urlInput');
+            const errorBox = document.getElementById('errorBox');
+            const resultBox = document.getElementById('resultBox');
+            const btnLabel = document.getElementById('btnLabel');
+            const btnSpin = document.getElementById('btnSpin');
+            const dlBtn = document.getElementById('dlBtn');
+
+            const val = urlInput.value.trim();
+            if(!val) {
+                errorBox.innerText = 'Pehle video ka link input box me paste karein!';
+                errorBox.classList.remove('hidden');
+                return;
+            }
+
+            errorBox.classList.add('hidden');
+            resultBox.classList.add('hidden');
+            btnLabel.classList.add('hidden');
+            btnSpin.classList.remove('hidden');
+            dlBtn.disabled = true;
+
+            try {
+                const res = await fetch('/api/download', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ url: val })
+                });
+
+                const data = await res.json();
+
+                if (data.success) {
+                    document.getElementById('resThumb').src = data.thumbnail || 'https://via.placeholder.com/300';
+                    document.getElementById('resTitle').innerText = data.title;
+                    document.getElementById('dlHd').value = data.download_hd;
+                    document.getElementById('dlSrv2').value = data.download_server2;
+                    document.getElementById('dlAudio').value = data.download_mp3;
+                    resultBox.classList.remove('hidden');
+                } else {
+                    errorBox.innerText = data.error || 'Extract nahi ho paya.';
+                    errorBox.classList.remove('hidden');
+                }
+            } catch (err) {
+                errorBox.innerText = 'Server reach nahi hua. Termux me script chalu rakhein.';
+                errorBox.classList.remove('hidden');
+            } finally {
+                btnLabel.classList.remove('hidden');
+                btnSpin.classList.add('hidden');
+                dlBtn.disabled = false;
+            }
+        }
+    </script>
+</body>
+</html>
