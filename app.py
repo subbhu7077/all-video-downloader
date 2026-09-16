@@ -44,32 +44,44 @@ def sitemap():
 </urlset>"""
     return Response(content, mimetype='application/xml')
 
-def extract_youtube_fallback(url):
-    # Public high-speed media resolver for YouTube bypass
-    api_endpoint = "https://api.cobalt.tools"
+def fetch_youtube_clean(url):
+    """Bypasses YouTube datacenter ban using rapid multi-instance resolvers"""
+    instances = [
+        "https://api.cobalt.tools",
+        "https://cobalt.api.scav.info",
+        "https://co.eik.top"
+    ]
+    
     headers = {
         "Accept": "application/json",
         "Content-Type": "application/json",
-        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64)"
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36"
     }
+    
     payload = {
         "url": url,
         "videoQuality": "720",
         "audioFormat": "mp3",
         "downloadMode": "auto"
     }
-    resp = requests.post(api_endpoint, json=payload, headers=headers, timeout=10)
-    data = resp.json()
-    if "url" in data:
-        direct = data["url"]
-        return {
-            'success': True,
-            'title': 'YouTube Video (HD)',
-            'thumbnail': 'https://images.unsplash.com/photo-1611162617213-7d7a39e9b1d7?w=500',
-            'download_hd': direct,
-            'download_server2': direct,
-            'download_mp3': direct
-        }
+
+    for inst in instances:
+        try:
+            r = requests.post(f"{inst}", json=payload, headers=headers, timeout=6)
+            if r.status_code == 200:
+                data = r.json()
+                dl_url = data.get("url")
+                if dl_url:
+                    return {
+                        'success': True,
+                        'title': 'YouTube Video (HD)',
+                        'thumbnail': 'https://images.unsplash.com/photo-1611162617213-7d7a39e9b1d7?w=400',
+                        'download_hd': dl_url,
+                        'download_server2': dl_url,
+                        'download_mp3': dl_url
+                    }
+        except Exception:
+            continue
     return None
 
 @app.route('/api/download', methods=['POST'])
@@ -78,30 +90,32 @@ def api_download():
     url = payload.get('url', '').strip()
 
     if not url:
-        return jsonify({'success': False, 'error': 'Kripya valid video link dalein.'}), 400
+        return jsonify({'success': False, 'error': 'Kripya video URL enter karein.'}), 400
 
     is_yt = bool(re.search(r'(youtube\.com|youtu\.be)', url, re.IGNORECASE))
 
-    # Priority 1: Standard yt-dlp extractor
+    # If YouTube, directly route to bypass resolvers
+    if is_yt:
+        res = fetch_youtube_clean(url)
+        if res:
+            return jsonify(res)
+
+    # Standard engine for Instagram, TikTok, Facebook, Twitter, Reddit
     ydl_opts = {
         'quiet': True,
         'no_warnings': True,
         'skip_download': True,
         'noplaylist': True,
         'geo_bypass': True,
-        'extractor_args': {
-            'youtube': {
-                'player_client': ['web_creator', 'ios', 'android']
-            }
-        },
         'http_headers': {
-            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36'
+            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36'
         }
     }
 
     try:
         with yt_dlp.YoutubeDL(ydl_opts) as ydl:
             info = ydl.extract_info(url, download=False)
+            
             title = info.get('title') or 'Social Media Video'
             thumb = info.get('thumbnail') or ''
             direct_video = ''
@@ -114,6 +128,7 @@ def api_download():
                     continue
                 vcodec = f.get('vcodec', 'none')
                 acodec = f.get('acodec', 'none')
+
                 if vcodec != 'none' and acodec != 'none':
                     direct_video = f_url
                 if vcodec == 'none' and acodec != 'none':
@@ -134,16 +149,7 @@ def api_download():
             })
 
     except Exception as e:
-        # Priority 2: Bypass resolver for YouTube bot blocks
-        if is_yt:
-            try:
-                res = extract_youtube_fallback(url)
-                if res:
-                    return jsonify(res)
-            except Exception:
-                pass
-        
-        return jsonify({'success': False, 'error': 'Video stream extract nahi ho paya. URL public hona chahiye.'}), 400
+        return jsonify({'success': False, 'error': 'Video stream extract nahi ho paya. URL check karein.'}), 400
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=8080)
