@@ -11,7 +11,6 @@ SITE_URL = "https://all-video-downloader-qc9k.onrender.com"
 def home():
     return render_template('index.html')
 
-# Monetag Verification Route
 @app.route('/sw.js')
 def service_worker():
     sw_code = """Self.options = {
@@ -22,7 +21,6 @@ self.lary = ""
 importScripts('https://3nbf4.com/act/files/service-worker.min.js?r=sw')"""
     return Response(sw_code, mimetype='application/javascript')
 
-# SEO: Robots.txt Route
 @app.route('/robots.txt')
 def robots():
     content = f"""User-agent: *
@@ -31,7 +29,6 @@ Sitemap: {SITE_URL}/sitemap.xml
 """
     return Response(content, mimetype='text/plain')
 
-# SEO: Sitemap.xml Route
 @app.route('/sitemap.xml')
 def sitemap():
     content = f"""<?xml version="1.0" encoding="UTF-8"?>
@@ -51,17 +48,23 @@ def api_download():
     url = payload.get('url', '').strip()
 
     if not url:
-        return jsonify({'success': False, 'error': 'Kripya valid URL enter karein.'}), 400
+        return jsonify({'success': False, 'error': 'Kripya valid video URL dalein.'}), 400
 
+    # yt-dlp configuration with YouTube Android client bypass
     ydl_opts = {
         'quiet': True,
         'no_warnings': True,
         'skip_download': True,
-        'format': 'bestvideo+bestaudio/best',
         'noplaylist': True,
         'geo_bypass': True,
+        'extractor_args': {
+            'youtube': {
+                'player_client': ['android', 'web']
+            }
+        },
         'http_headers': {
-            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36'
+            'User-Agent': 'Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Mobile Safari/537.36',
+            'Accept-Language': 'en-US,en;q=0.9'
         }
     }
 
@@ -71,19 +74,36 @@ def api_download():
             
             title = info.get('title') or 'Social Media Video'
             thumb = info.get('thumbnail') or ''
-            direct_video = info.get('url') or ''
-            audio_url = direct_video
-            server2 = direct_video
+            direct_video = ''
+            server2 = ''
+            audio_url = ''
 
+            # Check formats
             formats = info.get('formats', [])
+            
+            # Find direct video with audio
             for f in formats:
-                if f.get('acodec') != 'none' and f.get('vcodec') == 'none' and f.get('url'):
-                    audio_url = f.get('url')
-                if f.get('ext') == 'mp4' and f.get('url'):
-                    server2 = f.get('url')
+                f_url = f.get('url', '')
+                if not f_url:
+                    continue
+                vcodec = f.get('vcodec', 'none')
+                acodec = f.get('acodec', 'none')
 
-            if not direct_video and formats:
-                direct_video = formats[-1].get('url', '')
+                # Combined stream
+                if vcodec != 'none' and acodec != 'none':
+                    direct_video = f_url
+                    server2 = f_url
+                # Audio only
+                if vcodec == 'none' and acodec != 'none':
+                    audio_url = f_url
+
+            # Fallback direct url if combined not found
+            if not direct_video:
+                direct_video = info.get('url') or (formats[-1].get('url') if formats else '')
+            if not server2:
+                server2 = direct_video
+            if not audio_url:
+                audio_url = direct_video
 
             return jsonify({
                 'success': True,
@@ -95,7 +115,7 @@ def api_download():
             })
 
     except Exception as e:
-        return jsonify({'success': False, 'error': 'Link fetch nahi ho paya. URL public hona chahiye.'}), 400
+        return jsonify({'success': False, 'error': f'Fetch error: {str(e)[:120]}'}), 400
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=8080)
