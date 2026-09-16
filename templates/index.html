@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Universal Video Downloader - SnapTik Pro</title>
+    <title>Video Downloader All in One - Free HD Media Downloader</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
@@ -16,18 +16,18 @@
     <header class="bg-slate-900/90 border-b border-slate-800 sticky top-0 z-50 py-3.5 px-4">
         <div class="max-w-4xl mx-auto flex items-center justify-between">
             <div class="flex items-center gap-2">
-                <i class="fa-solid fa-cloud-arrow-down text-emerald-400 text-2xl"></i>
-                <span class="text-xl font-black tracking-wide text-emerald-400">Universal<span class="text-white">DL</span></span>
+                <i class="fa-solid fa-circle-play text-emerald-400 text-2xl"></i>
+                <span class="text-lg sm:text-xl font-black tracking-wide text-white">Video Downloader <span class="text-emerald-400">All in One</span></span>
             </div>
-            <span class="text-xs bg-emerald-950 text-emerald-300 border border-emerald-800 px-3 py-1 rounded-full">All-in-One Engine</span>
+            <span class="text-xs bg-emerald-950 text-emerald-300 border border-emerald-800 px-3 py-1 rounded-full font-semibold">Free & Fast</span>
         </div>
     </header>
 
     <!-- Main Body -->
-    <main class="max-w-2xl mx-auto w-full px-4 py-6 flex-grow">
+    <main class="max-w-2xl mx-auto w-full px-4 py-8 flex-grow">
         <div class="text-center mb-6">
-            <h1 class="text-2xl sm:text-3xl font-black text-white mb-2">Social Media Video Downloader</h1>
-            <p class="text-slate-400 text-xs sm:text-sm">Download without watermark in high speed</p>
+            <h1 class="text-2xl sm:text-3xl font-black text-white mb-2">Universal Video Downloader</h1>
+            <p class="text-slate-400 text-xs sm:text-sm">Download without watermark from Instagram, YouTube, TikTok, Facebook & more</p>
         </div>
 
         <!-- URL Input Card -->
@@ -93,7 +93,7 @@
 
     <!-- Footer -->
     <footer class="py-4 text-center text-xs text-slate-600 border-t border-slate-900">
-        &copy; 2026 Universal Downloader.
+        &copy; 2026 Video Downloader All in One.
     </footer>
 
     <!-- Logic Controller -->
@@ -103,7 +103,7 @@
                 const text = await navigator.clipboard.readText();
                 document.getElementById('urlInput').value = text;
             } catch (err) {
-                alert('Clipbord permission allow karein ya long press karke paste karein.');
+                alert('Clipboard permission allow karein ya long press karke paste karein.');
             }
         }
 
@@ -145,7 +145,7 @@
                     document.getElementById('btnAudio').href = data.download_mp3;
                     resultBox.classList.remove('hidden');
                 } else {
-                    errorBox.innerText = data.error || 'Extract nahi ho paya.';
+                    errorBox.innerText = data.error || 'Extract nahi ho paya. Public video URL check karein.';
                     errorBox.classList.remove('hidden');
                 }
             } catch (err) {
