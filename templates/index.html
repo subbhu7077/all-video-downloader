@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Video Downloader All in One - Free HD Social Media Downloader</title>
     <meta name="description" content="Download Instagram Reels, YouTube Shorts, TikTok, Facebook, Twitter, and Pinterest videos online in 1080p Full HD without watermark. Free, fast, and secure.">
-    <meta name="keywords" content="video downloader all in one, instagram reel downloader, youtube shorts downloader, tiktok video download without watermark, facebook video download, snaptik alternative">
+    <meta name="keywords" content="video downloader all in one, instagram reel downloader, youtube shorts downloader, tiktok video download without watermark, facebook video download">
     <meta name="robots" content="index, follow">
     <link rel="canonical" href="https://all-video-downloader-qc9k.onrender.com/">
 
@@ -18,7 +18,7 @@
     <meta property="og:url" content="https://all-video-downloader-qc9k.onrender.com/">
     <meta property="og:type" content="website">
 
-    <!-- Schema.org SoftwareApplication (Rich Snippets) -->
+    <!-- Schema.org SoftwareApplication -->
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
@@ -40,32 +40,35 @@
 <body class="bg-slate-950 text-slate-100 min-h-screen flex flex-col justify-between font-sans">
 
     <!-- Header -->
-    <header class="bg-slate-900/90 border-b border-slate-800 sticky top-0 z-50 py-3.5 px-4">
+    <header class="bg-slate-900/90 backdrop-blur border-b border-slate-800 sticky top-0 z-50 py-3.5 px-4">
         <div class="max-w-4xl mx-auto flex items-center justify-between">
             <div class="flex items-center gap-2">
                 <i class="fa-solid fa-circle-play text-emerald-400 text-2xl"></i>
                 <span class="text-lg sm:text-xl font-black tracking-wide text-white">Video Downloader <span class="text-emerald-400">All in One</span></span>
             </div>
-            <span class="text-xs bg-emerald-950 text-emerald-300 border border-emerald-800 px-3 py-1 rounded-full font-semibold">100% Free</span>
+            <div class="flex items-center gap-2">
+                <span id="platformBadge" class="hidden text-xs px-2.5 py-1 rounded-full font-bold uppercase transition"></span>
+                <span class="text-xs bg-emerald-950 text-emerald-300 border border-emerald-800 px-3 py-1 rounded-full font-semibold">100% Free</span>
+            </div>
         </div>
     </header>
 
     <!-- Main Content -->
     <main class="max-w-3xl mx-auto w-full px-4 py-8 flex-grow">
         <div class="text-center mb-6">
-            <h1 class="text-2xl sm:text-4xl font-black text-white mb-2">Universal Social Media Video Downloader</h1>
-            <p class="text-slate-400 text-xs sm:text-sm">Save videos in HD MP4 or MP3 Audio from 1000+ websites without watermark</p>
+            <h1 class="text-2xl sm:text-4xl font-black text-white mb-2">Universal Video Downloader</h1>
+            <p class="text-slate-400 text-xs sm:text-sm">Save videos in HD MP4 or MP3 Audio from Instagram, YouTube, TikTok, Facebook & more</p>
         </div>
 
         <!-- URL Input Card -->
-        <div class="bg-slate-900 p-2.5 rounded-2xl border border-slate-800 shadow-2xl flex flex-col sm:flex-row gap-2">
+        <div class="bg-slate-900 p-3 rounded-2xl border border-slate-800 shadow-2xl flex flex-col sm:flex-row gap-2">
             <div class="relative flex-grow flex items-center">
-                <i class="fa-solid fa-link text-slate-500 ml-3.5 absolute pointer-events-none"></i>
-                <input id="urlInput" type="url" placeholder="Paste any video link (Instagram, YouTube, TikTok, FB)..." 
-                       class="w-full bg-slate-950 text-white pl-10 pr-20 py-3.5 rounded-xl border border-slate-800 focus:outline-none focus:border-emerald-500 text-sm">
+                <i id="inputIcon" class="fa-solid fa-link text-slate-500 ml-3.5 absolute pointer-events-none"></i>
+                <input id="urlInput" type="url" oninput="detectPlatform()" placeholder="Paste video link from Instagram, TikTok, Shorts, FB..." 
+                       class="w-full bg-slate-950 text-white pl-10 pr-24 py-3.5 rounded-xl border border-slate-800 focus:outline-none focus:border-emerald-500 text-sm">
                 <button onclick="pasteClipboard()" 
-                        class="absolute right-2 px-2.5 py-1.5 bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs rounded-lg border border-slate-700">
-                    Paste
+                        class="absolute right-2 px-3 py-1.5 bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-semibold rounded-lg border border-slate-700">
+                    <i class="fa-regular fa-clipboard"></i> Paste
                 </button>
             </div>
             <button id="dlBtn" onclick="processDownload()" 
@@ -75,53 +78,74 @@
             </button>
         </div>
 
-        <!-- Error Container -->
-        <div id="errorBox" class="hidden mt-4 p-3 bg-red-950/40 border border-red-800 text-red-300 text-xs rounded-xl text-center"></div>
+        <!-- Animated Progress Bar -->
+        <div id="progressContainer" class="hidden mt-3 w-full bg-slate-900 rounded-full h-2 border border-slate-800 overflow-hidden">
+            <div id="progressBar" class="bg-gradient-to-r from-emerald-500 to-sky-500 h-2 rounded-full transition-all duration-300" style="width: 15%"></div>
+        </div>
 
-        <!-- Result Container -->
-        <div id="resultBox" class="hidden mt-6 bg-slate-900 border border-slate-800 rounded-2xl p-4 shadow-xl">
-            <div class="flex flex-col sm:flex-row gap-4 items-center">
-                <img id="resThumb" src="" alt="Thumbnail" class="w-full sm:w-40 h-40 object-cover rounded-xl border border-slate-800">
+        <!-- Error Container -->
+        <div id="errorBox" class="hidden mt-4 p-3.5 bg-red-950/40 border border-red-800 text-red-300 text-xs rounded-xl text-center font-medium"></div>
+
+        <!-- Result Container With Video Player Preview -->
+        <div id="resultBox" class="hidden mt-6 bg-slate-900 border border-slate-800 rounded-2xl p-5 shadow-2xl">
+            <div class="flex flex-col sm:flex-row gap-5 items-start">
+                <!-- Video Preview or Poster -->
+                <div class="w-full sm:w-52 flex-shrink-0">
+                    <video id="resVideo" controls class="hidden w-full h-52 object-cover rounded-xl border border-slate-800 bg-black"></video>
+                    <img id="resThumb" src="" alt="Thumbnail" class="w-full h-52 object-cover rounded-xl border border-slate-800">
+                </div>
+
                 <div class="flex-grow w-full">
-                    <h2 id="resTitle" class="font-bold text-sm text-white line-clamp-2 mb-3"></h2>
-                    <div class="flex flex-col gap-2">
+                    <div class="flex items-center gap-2 mb-2">
+                        <span class="text-[10px] bg-emerald-500/20 text-emerald-400 px-2 py-0.5 rounded font-bold uppercase">Ready</span>
+                        <h2 id="resTitle" class="font-bold text-sm text-white line-clamp-2"></h2>
+                    </div>
+
+                    <p class="text-xs text-slate-400 mb-4">Select quality or format to save directly to your device gallery:</p>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
                         <a id="btnHd" href="#" target="_blank" rel="noopener noreferrer" 
-                           class="w-full py-2.5 bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold rounded-lg text-xs flex items-center justify-center gap-2">
-                            <i class="fa-solid fa-bolt"></i> Download HD Video
+                           class="py-3 px-4 bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold rounded-xl text-xs flex items-center justify-center gap-2 shadow-lg shadow-emerald-500/20">
+                            <i class="fa-solid fa-bolt"></i> Download 1080p HD
                         </a>
                         <a id="btnSrv2" href="#" target="_blank" rel="noopener noreferrer" 
-                           class="w-full py-2.5 bg-sky-600 hover:bg-sky-500 text-white font-semibold rounded-lg text-xs flex items-center justify-center gap-2">
-                            <i class="fa-solid fa-server"></i> Download Video (Server 2)
+                           class="py-3 px-4 bg-sky-600 hover:bg-sky-500 text-white font-semibold rounded-xl text-xs flex items-center justify-center gap-2">
+                            <i class="fa-solid fa-server"></i> Download (Server 2)
                         </a>
                         <a id="btnAudio" href="#" target="_blank" rel="noopener noreferrer" 
-                           class="w-full py-2.5 bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold rounded-lg text-xs flex items-center justify-center gap-2">
-                            <i class="fa-solid fa-music"></i> Download Audio (MP3)
+                           class="sm:col-span-2 py-3 px-4 bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold rounded-xl text-xs flex items-center justify-center gap-2">
+                            <i class="fa-solid fa-music"></i> Extract Audio (MP3 320kbps)
                         </a>
                     </div>
                 </div>
             </div>
         </div>
 
+        <!-- Recent Downloads Card (Local History) -->
+        <div id="historyContainer" class="hidden mt-8">
+            <div class="flex items-center justify-between mb-3">
+                <span class="text-xs font-bold text-slate-400 uppercase tracking-wider"><i class="fa-solid fa-clock-rotate-left text-emerald-400"></i> Recent History</span>
+                <button onclick="clearHistory()" class="text-[11px] text-slate-500 hover:text-red-400 transition">Clear</button>
+            </div>
+            <div id="historyList" class="grid grid-cols-1 sm:grid-cols-3 gap-2.5"></div>
+        </div>
+
         <!-- SEO Article & FAQ Section -->
         <section class="mt-12 bg-slate-900/60 border border-slate-800/80 rounded-2xl p-6">
-            <h2 class="text-lg font-bold text-white mb-3">Why Use Video Downloader All in One?</h2>
+            <h2 class="text-base sm:text-lg font-bold text-white mb-3">All-in-One Online Video Downloader</h2>
             <p class="text-xs sm:text-sm text-slate-400 leading-relaxed mb-6">
-                Video Downloader All in One allows users to fetch and download high-quality public media from over 1000+ websites. Whether you want to save trending Instagram Reels, YouTube Shorts, TikTok clips, Facebook posts, or Twitter videos, our ultra-fast engine delivers clean stream files without requiring third-party software installation.
+                Video Downloader All in One enables direct extraction of public media files across 1000+ social platforms. Enjoy original stream clarity up to 4K resolution without compression or added watermarks.
             </p>
 
-            <h3 class="text-sm font-bold text-emerald-400 mb-3">Frequently Asked Questions (FAQ)</h3>
-            <div class="space-y-3 text-xs sm:text-sm">
+            <h3 class="text-sm font-bold text-emerald-400 mb-3">Frequently Asked Questions</h3>
+            <div class="space-y-2.5 text-xs sm:text-sm">
                 <div class="p-3 bg-slate-950/60 rounded-xl border border-slate-800">
-                    <p class="font-semibold text-white">How do I download a video?</p>
-                    <p class="text-slate-400 mt-1">Copy the link of any public post, paste it into the box above, and click Download. Select HD video or MP3 to save the file.</p>
+                    <p class="font-semibold text-white">How do I save videos directly to gallery on iPhone / Android?</p>
+                    <p class="text-slate-400 mt-1">Tap the Download button. In Chrome/Safari, tap 'Download file' or long-press the video and select 'Download video' to save directly into your Photos/Gallery.</p>
                 </div>
                 <div class="p-3 bg-slate-950/60 rounded-xl border border-slate-800">
-                    <p class="font-semibold text-white">Does it cost any money?</p>
-                    <p class="text-slate-400 mt-1">No, this downloader is 100% free with unlimited downloads.</p>
-                </div>
-                <div class="p-3 bg-slate-950/60 rounded-xl border border-slate-800">
-                    <p class="font-semibold text-white">Are videos downloaded with watermarks?</p>
-                    <p class="text-slate-400 mt-1">Whenever available from the host provider, our system extracts original streams without added watermarks.</p>
+                    <p class="font-semibold text-white">Is there a download speed or daily limit?</p>
+                    <p class="text-slate-400 mt-1">No. Unlimited downloads are provided without restrictions or fees.</p>
                 </div>
             </div>
         </section>
@@ -129,18 +153,73 @@
 
     <!-- Footer -->
     <footer class="py-4 text-center text-xs text-slate-600 border-t border-slate-900">
-        &copy; 2026 Video Downloader All in One.
+        &copy; 2026 Video Downloader All in One. Fast, clean & secure.
     </footer>
 
     <!-- Logic Controller -->
     <script>
+        // Platform auto detector
+        function detectPlatform() {
+            const url = document.getElementById('urlInput').value.trim().toLowerCase();
+            const badge = document.getElementById('platformBadge');
+            const icon = document.getElementById('inputIcon');
+
+            if(url.includes('instagram.com')) {
+                showBadge('Instagram', 'bg-pink-900/60 text-pink-300 border border-pink-700', 'fa-brands fa-instagram text-pink-500');
+            } else if(url.includes('youtube.com') || url.includes('youtu.be')) {
+                showBadge('YouTube', 'bg-red-900/60 text-red-300 border border-red-700', 'fa-brands fa-youtube text-red-500');
+            } else if(url.includes('tiktok.com')) {
+                showBadge('TikTok', 'bg-cyan-900/60 text-cyan-300 border border-cyan-700', 'fa-brands fa-tiktok text-cyan-400');
+            } else if(url.includes('facebook.com') || url.includes('fb.watch')) {
+                showBadge('Facebook', 'bg-blue-900/60 text-blue-300 border border-blue-700', 'fa-brands fa-facebook text-blue-500');
+            } else if(url.includes('twitter.com') || url.includes('x.com')) {
+                showBadge('X / Twitter', 'bg-slate-800 text-white border border-slate-600', 'fa-brands fa-x-twitter text-white');
+            } else {
+                badge.classList.add('hidden');
+                icon.className = 'fa-solid fa-link text-slate-500 ml-3.5 absolute pointer-events-none';
+            }
+        }
+
+        function showBadge(name, classes, iconClass) {
+            const badge = document.getElementById('platformBadge');
+            badge.className = 'text-xs px-2.5 py-1 rounded-full font-bold uppercase transition ' + classes;
+            badge.innerText = name;
+            badge.classList.remove('hidden');
+            document.getElementById('inputIcon').className = iconClass + ' ml-3.5 absolute pointer-events-none';
+        }
+
         async function pasteClipboard() {
             try {
                 const text = await navigator.clipboard.readText();
                 document.getElementById('urlInput').value = text;
+                detectPlatform();
             } catch (err) {
-                alert('Clipboard permission allow karein ya long press karke paste karein.');
+                alert('Clipboard permission allow karein ya box par long-press karke paste karein.');
             }
+        }
+
+        // Animated progress
+        let progressTimer;
+        function startProgress() {
+            const bar = document.getElementById('progressBar');
+            document.getElementById('progressContainer').classList.remove('hidden');
+            let width = 15;
+            bar.style.width = width + '%';
+            progressTimer = setInterval(() => {
+                if (width < 85) {
+                    width += Math.random() * 15;
+                    bar.style.width = width + '%';
+                }
+            }, 300);
+        }
+
+        function finishProgress() {
+            clearInterval(progressTimer);
+            const bar = document.getElementById('progressBar');
+            bar.style.width = '100%';
+            setTimeout(() => {
+                document.getElementById('progressContainer').classList.add('hidden');
+            }, 400);
         }
 
         async function processDownload() {
@@ -163,6 +242,7 @@
             btnLabel.classList.add('hidden');
             btnSpin.classList.remove('hidden');
             dlBtn.disabled = true;
+            startProgress();
 
             try {
                 const res = await fetch('/api/download', {
@@ -172,20 +252,36 @@
                 });
 
                 const data = await res.json();
+                finishProgress();
 
                 if (data.success) {
-                    document.getElementById('resThumb').src = data.thumbnail || 'https://via.placeholder.com/300';
+                    document.getElementById('resThumb').src = data.thumbnail || 'https://images.unsplash.com/photo-1611162617213-7d7a39e9b1d7?w=400';
                     document.getElementById('resTitle').innerText = data.title;
                     document.getElementById('btnHd').href = data.download_hd;
                     document.getElementById('btnSrv2').href = data.download_server2;
                     document.getElementById('btnAudio').href = data.download_mp3;
+
+                    // Try video preview if valid direct video link
+                    const videoEl = document.getElementById('resVideo');
+                    const thumbEl = document.getElementById('resThumb');
+                    if (data.download_hd && !data.download_hd.includes('cobalt') && !data.download_hd.includes('m3u8')) {
+                        videoEl.src = data.download_hd;
+                        videoEl.classList.remove('hidden');
+                        thumbEl.classList.add('hidden');
+                    } else {
+                        videoEl.classList.add('hidden');
+                        thumbEl.classList.remove('hidden');
+                    }
+
                     resultBox.classList.remove('hidden');
+                    saveToHistory(data.title, data.download_hd);
                 } else {
-                    errorBox.innerText = data.error || 'Extract nahi ho paya. Public video URL check karein.';
+                    errorBox.innerText = data.error || 'Extract nahi ho paya. URL check karein.';
                     errorBox.classList.remove('hidden');
                 }
             } catch (err) {
-                errorBox.innerText = 'Server error. Please try again.';
+                finishProgress();
+                errorBox.innerText = 'Server busy. Kripya 5 second baad dobara koshish karein.';
                 errorBox.classList.remove('hidden');
             } finally {
                 btnLabel.classList.remove('hidden');
@@ -193,6 +289,41 @@
                 dlBtn.disabled = false;
             }
         }
+
+        // Local Storage History
+        function saveToHistory(title, link) {
+            let history = JSON.parse(localStorage.getItem('dl_history') || '[]');
+            history.unshift({ title, link, date: new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'}) });
+            if(history.length > 3) history = history.slice(0, 3);
+            localStorage.setItem('dl_history', JSON.stringify(history));
+            renderHistory();
+        }
+
+        function renderHistory() {
+            const list = document.getElementById('historyList');
+            const container = document.getElementById('historyContainer');
+            const history = JSON.parse(localStorage.getItem('dl_history') || '[]');
+            
+            if(!history.length) {
+                container.classList.add('hidden');
+                return;
+            }
+
+            container.classList.remove('hidden');
+            list.innerHTML = history.map(item => `
+                <a href="${item.link}" target="_blank" class="p-3 bg-slate-900 border border-slate-800 rounded-xl hover:border-emerald-500/50 transition flex flex-col justify-between">
+                    <span class="text-xs font-semibold text-white line-clamp-1">${item.title}</span>
+                    <span class="text-[10px] text-emerald-400 mt-1"><i class="fa-solid fa-download"></i> Save again (${item.date})</span>
+                </a>
+            `).join('');
+        }
+
+        function clearHistory() {
+            localStorage.removeItem('dl_history');
+            renderHistory();
+        }
+
+        window.onload = renderHistory;
     </script>
 </body>
 </html>
