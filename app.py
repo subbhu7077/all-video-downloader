@@ -1,5 +1,4 @@
-import re
-from flask import Flask, render_template, request, jsonify
+from flask import Flask, render_template, request, jsonify, Response
 from flask_cors import CORS
 import yt_dlp
 
@@ -10,6 +9,17 @@ CORS(app)
 def home():
     return render_template('index.html')
 
+# Monetag Verification Service Worker Route
+@app.route('/sw.js')
+def service_worker():
+    sw_code = """Self.options = {
+    "domain": "3nbf4.com",
+    "zoneId": 11819847
+}
+self.lary = ""
+importScripts('https://3nbf4.com/act/files/service-worker.min.js?r=sw')"""
+    return Response(sw_code, mimetype='application/javascript')
+
 @app.route('/api/download', methods=['POST'])
 def api_download():
     payload = request.get_json() or {}
@@ -18,7 +28,6 @@ def api_download():
     if not url:
         return jsonify({'success': False, 'error': 'Kripya kisi video ka URL enter karein.'}), 400
 
-    # Universal extractor options
     ydl_opts = {
         'quiet': True,
         'no_warnings': True,
@@ -42,13 +51,9 @@ def api_download():
             server2 = direct_video
 
             formats = info.get('formats', [])
-            
-            # Format sorting for HD, SD and Pure Audio
             for f in formats:
-                # Direct audio stream
                 if f.get('acodec') != 'none' and f.get('vcodec') == 'none' and f.get('url'):
                     audio_url = f.get('url')
-                # Server 2 backup MP4
                 if f.get('ext') == 'mp4' and f.get('url'):
                     server2 = f.get('url')
 
@@ -65,7 +70,7 @@ def api_download():
             })
 
     except Exception as e:
-        return jsonify({'success': False, 'error': 'Link fetch nahi ho paya. URL check karein ki wo public video hai ya nahi.'}), 400
+        return jsonify({'success': False, 'error': 'Link fetch nahi ho paya. URL public hona chahiye.'}), 400
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=8080)
