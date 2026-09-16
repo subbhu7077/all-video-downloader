@@ -7,18 +7,8 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
-    <!-- ⚠️ MONETAG / ADSTERRA POPUNDER OR TRACKING SCRIPT CAN BE PASTED HERE -->
-    <script>
-        // Example Direct Link Ad URL (Apna Monetag / Adsterra direct link yahan replace karein)
-        const AD_DIRECT_LINK = "https://www.google.com"; 
-
-        function triggerAdThen(callbackUrl) {
-            // New tab me direct link ad trigger karta hai
-            window.open(AD_DIRECT_LINK, '_blank');
-            // Original video/audio download link open karta hai
-            window.location.href = callbackUrl;
-        }
-    </script>
+    <!-- Monetag Robust Multitag Ads -->
+    <script src="https://quge5.com/88/tag.min.js" data-zone="281804" async data-cfasync="false"></script>
 </head>
 <body class="bg-slate-950 text-slate-100 min-h-screen flex flex-col justify-between font-sans">
 
@@ -33,19 +23,11 @@
         </div>
     </header>
 
-    <!-- Top Banner Ad Space -->
-    <div class="w-full max-w-2xl mx-auto px-4 mt-4">
-        <div class="bg-slate-900 border border-dashed border-slate-800 p-3 rounded-xl text-center text-xs text-slate-500">
-            <!-- [TOP BANNER AD 728x90 / 300x50 SLOT HERE] -->
-            <span>Advertisement Banner Slot</span>
-        </div>
-    </div>
-
     <!-- Main Body -->
     <main class="max-w-2xl mx-auto w-full px-4 py-6 flex-grow">
         <div class="text-center mb-6">
             <h1 class="text-2xl sm:text-3xl font-black text-white mb-2">Social Media Video Downloader</h1>
-            <p class="text-slate-400 text-xs sm:text-sm">Instagram Reels, Shorts, TikTok, X, FB, Pinterest, Reddit & more</p>
+            <p class="text-slate-400 text-xs sm:text-sm">Download without watermark in high speed</p>
         </div>
 
         <!-- URL Input Card -->
@@ -76,31 +58,21 @@
                 <div class="flex-grow w-full">
                     <h3 id="resTitle" class="font-bold text-sm text-white line-clamp-2 mb-3"></h3>
                     <div class="flex flex-col gap-2">
-                        <button onclick="triggerAdThen(document.getElementById('dlHd').value)" 
-                                class="w-full py-2.5 bg-emerald-500 text-slate-950 font-bold rounded-lg text-xs flex items-center justify-center gap-2">
+                        <a id="btnHd" href="#" target="_blank" rel="noopener noreferrer" 
+                           class="w-full py-2.5 bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold rounded-lg text-xs flex items-center justify-center gap-2">
                             <i class="fa-solid fa-bolt"></i> Download HD Video
-                        </button>
-                        <button onclick="triggerAdThen(document.getElementById('dlSrv2').value)" 
-                                class="w-full py-2.5 bg-sky-600 text-white font-semibold rounded-lg text-xs flex items-center justify-center gap-2">
+                        </a>
+                        <a id="btnSrv2" href="#" target="_blank" rel="noopener noreferrer" 
+                           class="w-full py-2.5 bg-sky-600 hover:bg-sky-500 text-white font-semibold rounded-lg text-xs flex items-center justify-center gap-2">
                             <i class="fa-solid fa-server"></i> Download Video (Server 2)
-                        </button>
-                        <button onclick="triggerAdThen(document.getElementById('dlAudio').value)" 
-                                class="w-full py-2.5 bg-amber-500 text-slate-950 font-bold rounded-lg text-xs flex items-center justify-center gap-2">
+                        </a>
+                        <a id="btnAudio" href="#" target="_blank" rel="noopener noreferrer" 
+                           class="w-full py-2.5 bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold rounded-lg text-xs flex items-center justify-center gap-2">
                             <i class="fa-solid fa-music"></i> Download Audio (MP3)
-                        </button>
+                        </a>
                     </div>
                 </div>
             </div>
-            <!-- Hidden inputs to hold stream URLs -->
-            <input type="hidden" id="dlHd">
-            <input type="hidden" id="dlSrv2">
-            <input type="hidden" id="dlAudio">
-        </div>
-
-        <!-- Middle Banner Ad Space -->
-        <div class="mt-6 bg-slate-900 border border-dashed border-slate-800 p-4 rounded-xl text-center text-xs text-slate-500">
-            <!-- [MID CONTENT AD BANNER SLOT HERE] -->
-            <span>Ad Space (In-Page Native Banner)</span>
         </div>
 
         <!-- Supported Badges -->
@@ -121,7 +93,7 @@
 
     <!-- Footer -->
     <footer class="py-4 text-center text-xs text-slate-600 border-t border-slate-900">
-        &copy; 2026 Universal Downloader. Educational Purpose.
+        &copy; 2026 Universal Downloader.
     </footer>
 
     <!-- Logic Controller -->
@@ -168,16 +140,16 @@
                 if (data.success) {
                     document.getElementById('resThumb').src = data.thumbnail || 'https://via.placeholder.com/300';
                     document.getElementById('resTitle').innerText = data.title;
-                    document.getElementById('dlHd').value = data.download_hd;
-                    document.getElementById('dlSrv2').value = data.download_server2;
-                    document.getElementById('dlAudio').value = data.download_mp3;
+                    document.getElementById('btnHd').href = data.download_hd;
+                    document.getElementById('btnSrv2').href = data.download_server2;
+                    document.getElementById('btnAudio').href = data.download_mp3;
                     resultBox.classList.remove('hidden');
                 } else {
                     errorBox.innerText = data.error || 'Extract nahi ho paya.';
                     errorBox.classList.remove('hidden');
                 }
             } catch (err) {
-                errorBox.innerText = 'Server reach nahi hua. Termux me script chalu rakhein.';
+                errorBox.innerText = 'Server error. Please try again.';
                 errorBox.classList.remove('hidden');
             } finally {
                 btnLabel.classList.remove('hidden');
